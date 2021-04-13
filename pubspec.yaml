@@ -1,5 +1,5 @@
 name: google_ml_vision
-description: Flutter plugin for Google machine learning vision services.
+description: Flutter plugin for Google ML Kit on-device vision apis. It includes barcode scanning, image labeling, text recognition and face detection.
 homepage: https://github.com/brianmtully/flutter_google_ml_vision
 version: 0.0.2
 
