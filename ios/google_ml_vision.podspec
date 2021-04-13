@@ -8,15 +8,14 @@ libraryVersion = pubspec['version'].gsub('+', '-')
 
 Pod::Spec.new do |s|
   s.name             = 'google_ml_vision'
-  s.version          = '0.0.1'
+  s.version          = '0.0.2'
   s.summary          = 'Flutter plugin for Google ML Kit'
   s.description      = <<-DESC
-An SDK that brings Google's machine learning expertise to Android and iOS apps in a powerful yet
- easy-to-use package.
+Plugin for Google ML Kit
                        DESC
-  s.homepage         = 'https://www.brianmtully.com'
+  s.homepage         = 'https://github.com/brianmtully/flutter_google_ml_vision'
   s.license          = { :file => '../LICENSE' }
-  s.author           = { 'Flutter Team' => 'flutter-dev@googlegroups.com' }
+  s.author           = { 'Brian M Tully' => 'btully1@gmail.com' }
   s.source           = { :path => '.' }
   s.source_files = 'Classes/**/*'
   s.public_header_files = 'Classes/**/*.h'
