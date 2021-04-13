@@ -1,0 +1,41 @@
+name: google_ml_vision_example
+description: Demonstrates how to use the google_ml_vision plugin.
+author: Brian Tully
+
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+  flutter: ">=1.10.0"
+
+dependencies:
+  camera: ^0.8.1
+  cupertino_icons: ^1.0.2
+  google_ml_vision:
+    path: ../
+  flutter:
+    sdk: flutter
+  image_picker: ^0.6.0
+  image: ^3.0.2
+
+dependency_overrides:
+  archive: ^3.0.0
+  crypto: ^3.0.0
+
+dev_dependencies:
+  e2e: ^0.6.1
+  flutter_driver:
+    sdk: flutter
+  flutter_test:
+    sdk: flutter
+  path: ^1.8.0
+  path_provider: ^2.0.0
+  pedantic: ^1.8.0
+  test: any
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/test_face.jpg
+    - assets/test_barcode.jpg
+    - assets/test_contact_barcode.jpg
+    - assets/test_text.png
+    - assets/span_book.jpg
