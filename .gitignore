@@ -12,8 +12,6 @@
 pubspec.lock
 flutter_export_environment.sh
 
-examples/all_plugins/pubspec.yaml
-
 Podfile.lock
 Pods/
 Podfile
@@ -48,7 +46,6 @@ build/
 .project
 .classpath
 .settings
-/pubspec.yaml
 .last_build_id
 
 # Docs
