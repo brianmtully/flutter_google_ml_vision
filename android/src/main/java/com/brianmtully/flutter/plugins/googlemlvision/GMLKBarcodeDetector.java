@@ -36,10 +36,10 @@ class GMLKBarcodeDetector implements Detector {
         .addOnSuccessListener(
             new OnSuccessListener<List<Barcode>>() {
               @Override
-              public void onSuccess(List<Barcode> firebaseVisionBarcodes) {
+              public void onSuccess(List<Barcode> visionBarcodes) {
                 List<Map<String, Object>> barcodes = new ArrayList<>();
 
-                for (Barcode barcode : firebaseVisionBarcodes) {
+                for (Barcode barcode : visionBarcodes) {
                   Map<String, Object> barcodeMap = new HashMap<>();
 
                   Rect bounds = barcode.getBoundingBox();

@@ -9,7 +9,7 @@ libraryVersion = pubspec['version'].gsub('+', '-')
 Pod::Spec.new do |s|
   s.name             = 'google_ml_vision'
   s.version          = '0.0.1'
-  s.summary          = 'Flutter plugin for Google ML Kit for Firebase.'
+  s.summary          = 'Flutter plugin for Google ML Kit'
   s.description      = <<-DESC
 An SDK that brings Google's machine learning expertise to Android and iOS apps in a powerful yet
  easy-to-use package.

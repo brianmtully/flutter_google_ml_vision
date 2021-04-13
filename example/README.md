@@ -1,12 +1,8 @@
-# firebase_ml_vision_example
+# google_ml_vision_example
 
-Demonstrates how to use the firebase_ml_vision plugin.
+Demonstrates how to use the google_ml_vision plugin.
 
 ## Usage
-
-*Important* If using on-device detectors on `iOS`, see the plugin
-[README.md](https://github.com/FirebaseExtended/flutterfire/blob/master/packages/firebase_ml_vision/README.md) on including
-ML Model pods into the example project.
 
 This example uses the *image_picker* plugin to get images from the device gallery. If using an iOS
 device you will have to configure you project with the correct permissions seen under iOS
