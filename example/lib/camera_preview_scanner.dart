@@ -51,7 +51,6 @@ class _CameraPreviewScannerState extends State<CameraPreviewScanner> {
     );
     await _camera.initialize();
 
-    String resultString = '';
     await _camera.startImageStream((CameraImage image) {
       if (_isDetecting) return;
 
