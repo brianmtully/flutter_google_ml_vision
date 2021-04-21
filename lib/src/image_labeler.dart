@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-// @dart=2.9
+
 
 part of google_ml_vision;
 
@@ -28,11 +28,10 @@ part of google_ml_vision;
 /// ```
 class ImageLabeler {
   ImageLabeler._({
-    @required ImageLabelerOptions options,
-    @required int handle,
+    required ImageLabelerOptions options,
+    required int handle,
   })  : _options = options,
-        _handle = handle,
-        assert(options != null);
+        _handle = handle;
 
   final ImageLabelerOptions _options;
   final int _handle;
@@ -45,7 +44,7 @@ class ImageLabeler {
 
     _hasBeenOpened = true;
     final List<dynamic> reply =
-        await GoogleVision.channel.invokeListMethod<dynamic>(
+        await (GoogleVision.channel.invokeListMethod<dynamic>(
       'ImageLabeler#processImage',
       <String, dynamic>{
         'handle': _handle,
@@ -53,7 +52,7 @@ class ImageLabeler {
           'confidenceThreshold': _options.confidenceThreshold,
         },
       }..addAll(visionImage._serialize()),
-    );
+    ) as FutureOr<List<dynamic>>);
 
     final List<ImageLabel> labels = <ImageLabel>[];
     for (final dynamic data in reply) {
@@ -105,17 +104,17 @@ class ImageLabel {
         text = data['text'];
 
   /// The overall confidence of the result. Range [0.0, 1.0].
-  final double confidence;
+  final double? confidence;
 
   /// The opaque entity ID.
   ///
   /// IDs are available in Google Knowledge Graph Search API
   /// https://developers.google.com/knowledge-graph/
-  final String entityId;
+  final String? entityId;
 
   /// A detected label from the given image.
   ///
   /// The label returned here is in English only. The end developer should use
   /// [entityId] to retrieve unique id.
-  final String text;
+  final String? text;
 }

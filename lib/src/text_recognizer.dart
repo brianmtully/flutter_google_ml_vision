@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-// @dart=2.9
+
 
 part of google_ml_vision;
 
@@ -22,7 +22,7 @@ part of google_ml_vision;
 /// ```
 class TextRecognizer {
   TextRecognizer._({
-    @required int handle,
+    required int handle,
   }) : _handle = handle;
 
   final int _handle;
@@ -33,20 +33,19 @@ class TextRecognizer {
   /// Detects [VisionText] from a [GoogleVisionImage].
   Future<VisionText> processImage(GoogleVisionImage visionImage) async {
     assert(!_isClosed);
-    assert(visionImage != null);
 
     _hasBeenOpened = true;
 
-    final Map<String, dynamic> reply =
-        await GoogleVision.channel.invokeMapMethod<String, dynamic>(
+    final Map<String, dynamic>? reply =
+        await (GoogleVision.channel.invokeMapMethod<String, dynamic>(
       'TextRecognizer#processImage',
       <String, dynamic>{
         'handle': _handle,
         'options': <String, dynamic>{},
       }..addAll(visionImage._serialize()),
-    );
+    ));
 
-    return VisionText._(reply);
+    return VisionText._(reply!);
   }
 
   /// Releases resources used by this recognizer.
@@ -70,7 +69,7 @@ class VisionText {
             .map<TextBlock>((dynamic block) => TextBlock._(block)));
 
   /// String representation of the recognized text.
-  final String text;
+  final String? text;
 
   /// All recognized text broken down into individual blocks/paragraphs.
   final List<TextBlock> blocks;
@@ -102,7 +101,7 @@ abstract class TextContainer {
   /// The point (0, 0) is defined as the upper-left corner of the image.
   ///
   /// Could be null even if text is found.
-  final Rect boundingBox;
+  final Rect? boundingBox;
 
   /// The four corner points in clockwise direction starting with top-left.
   ///
@@ -122,7 +121,7 @@ abstract class TextContainer {
   ///
   /// Returned in reading order for the language. For Latin, this is top to
   /// bottom within a Block, and left-to-right within a Line.
-  final String text;
+  final String? text;
 }
 
 /// A block of text (think of it as a paragraph) as deemed by the OCR engine.
