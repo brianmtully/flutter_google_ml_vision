@@ -180,11 +180,7 @@ class GoogleVisionImageMetadata {
     required this.rawFormat,
     required this.planeData,
     this.rotation = ImageRotation.rotation0,
-  })  : assert(defaultTargetPlatform != TargetPlatform.iOS),
-        assert(defaultTargetPlatform != TargetPlatform.iOS),
-        assert(
-          defaultTargetPlatform != TargetPlatform.iOS || planeData.isNotEmpty,
-        );
+  });
 
   /// Size of the image in pixels.
   final Size size;
