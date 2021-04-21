@@ -149,11 +149,7 @@ class GoogleVisionImagePlaneMetadata {
     required this.bytesPerRow,
     this.height,
     this.width,
-  })  : assert(defaultTargetPlatform != TargetPlatform.iOS),
-        assert(defaultTargetPlatform != TargetPlatform.iOS),
-        assert(
-          defaultTargetPlatform != TargetPlatform.iOS,
-        );
+  });
 
   /// The row stride for this color plane, in bytes.
   final int bytesPerRow;
