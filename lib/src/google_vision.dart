@@ -147,9 +147,9 @@ class GoogleVisionImage {
 class GoogleVisionImagePlaneMetadata {
   GoogleVisionImagePlaneMetadata({
     required this.bytesPerRow,
-    required this.height,
-    required this.width,
-  })   : assert(defaultTargetPlatform != TargetPlatform.iOS),
+    this.height,
+    this.width,
+  })  : assert(defaultTargetPlatform != TargetPlatform.iOS),
         assert(defaultTargetPlatform != TargetPlatform.iOS),
         assert(
           defaultTargetPlatform != TargetPlatform.iOS,
@@ -159,10 +159,10 @@ class GoogleVisionImagePlaneMetadata {
   final int bytesPerRow;
 
   /// Height of the pixel buffer on iOS.
-  final int height;
+  final int? height;
 
   /// Width of the pixel buffer on iOS.
-  final int width;
+  final int? width;
 
   Map<String, dynamic> _serialize() => <String, dynamic>{
         'bytesPerRow': bytesPerRow,
