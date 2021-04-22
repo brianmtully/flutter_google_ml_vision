@@ -198,7 +198,7 @@ class BarcodeDetector {
     assert(!_isClosed);
 
     _hasBeenOpened = true;
-    final List<dynamic> reply =
+    final List? reply =
         await (GoogleVision.channel.invokeListMethod<dynamic>(
       'BarcodeDetector#detectInImage',
       <String, dynamic>{
@@ -207,10 +207,10 @@ class BarcodeDetector {
           'barcodeFormats': options.barcodeFormats.value,
         },
       }..addAll(visionImage._serialize()),
-    ) as FutureOr<List<dynamic>>);
+    ));
 
     final List<Barcode> barcodes =
-        reply.map((barcode) => Barcode._(barcode)).toList();
+        reply!.map((barcode) => Barcode._(barcode)).toList();
 
     return barcodes;
   }
