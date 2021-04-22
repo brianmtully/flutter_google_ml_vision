@@ -149,7 +149,8 @@ class GoogleVisionImagePlaneMetadata {
     required this.bytesPerRow,
     this.height,
     this.width,
-  });
+  })  : assert(defaultTargetPlatform != TargetPlatform.iOS || height != null),
+        assert(defaultTargetPlatform != TargetPlatform.iOS || width != null);
 
   /// The row stride for this color plane, in bytes.
   final int bytesPerRow;
@@ -177,10 +178,15 @@ class GoogleVisionImagePlaneMetadata {
 class GoogleVisionImageMetadata {
   GoogleVisionImageMetadata({
     required this.size,
-    required this.rawFormat,
-    required this.planeData,
+    this.rawFormat,
+    this.planeData,
     this.rotation = ImageRotation.rotation0,
-  });
+  })  : assert(
+  defaultTargetPlatform != TargetPlatform.iOS || rawFormat != null,
+  ),
+        assert(
+        defaultTargetPlatform != TargetPlatform.iOS || planeData != null,
+        );
 
   /// Size of the image in pixels.
   final Size size;
@@ -199,12 +205,12 @@ class GoogleVisionImageMetadata {
   /// See https://developer.apple.com/documentation/corevideo/1563591-pixel_format_identifiers?language=objc
   ///
   /// Not used on Android.
-  final dynamic rawFormat;
+  final Object? rawFormat;
 
   /// The plane attributes to create the image buffer on iOS.
   ///
   /// Not used on Android.
-  final List<GoogleVisionImagePlaneMetadata> planeData;
+  final List<GoogleVisionImagePlaneMetadata>? planeData;
 
   int _imageRotationToInt(ImageRotation rotation) {
     switch (rotation) {
@@ -221,12 +227,15 @@ class GoogleVisionImageMetadata {
   }
 
   Map<String, dynamic> _serialize() => <String, dynamic>{
-        'width': size.width,
-        'height': size.height,
-        'rotation': _imageRotationToInt(rotation),
-        'rawFormat': rawFormat,
-        'planeData': planeData.map((GoogleVisionImagePlaneMetadata plane) => plane._serialize()).toList(),
-      };
+    'width': size.width,
+    'height': size.height,
+    'rotation': _imageRotationToInt(rotation),
+    'rawFormat': rawFormat,
+    'planeData': planeData
+        ?.map(
+            (GoogleVisionImagePlaneMetadata plane) => plane._serialize())
+        .toList(),
+  };
 }
 
 String _enumToString(dynamic enumValue) {

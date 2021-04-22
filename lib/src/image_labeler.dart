@@ -30,7 +30,7 @@ class ImageLabeler {
   ImageLabeler._({
     required ImageLabelerOptions options,
     required int handle,
-  })  : _options = options,
+  })   : _options = options,
         _handle = handle;
 
   final ImageLabelerOptions _options;
@@ -41,10 +41,9 @@ class ImageLabeler {
   /// Finds entities in the input image.
   Future<List<ImageLabel>> processImage(GoogleVisionImage visionImage) async {
     assert(!_isClosed);
-
     _hasBeenOpened = true;
-    final List<dynamic> reply =
-        await (GoogleVision.channel.invokeListMethod<dynamic>(
+
+    final reply = await GoogleVision.channel.invokeListMethod<dynamic>(
       'ImageLabeler#processImage',
       <String, dynamic>{
         'handle': _handle,
@@ -52,10 +51,10 @@ class ImageLabeler {
           'confidenceThreshold': _options.confidenceThreshold,
         },
       }..addAll(visionImage._serialize()),
-    ) as FutureOr<List<dynamic>>);
+    );
 
     final List<ImageLabel> labels = <ImageLabel>[];
-    for (final dynamic data in reply) {
+    for (final dynamic data in reply!) {
       labels.add(ImageLabel._(data));
     }
 
@@ -96,7 +95,28 @@ class ImageLabelerOptions {
   final double confidenceThreshold;
 }
 
-/// Represents an entity label detected by [ImageLabeler].
+/// Options for cloud image labeler.
+///
+/// Confidence threshold could be provided for the label detection. For example,
+/// if the confidence threshold is set to 0.7, only labels with
+/// confidence >= 0.7 would be returned. The default threshold is 0.5.
+class CloudImageLabelerOptions {
+  /// Constructor for [CloudImageLabelerOptions].
+  ///
+  /// Confidence threshold could be provided for the label detection.
+  /// For example, if the confidence threshold is set to 0.7, only labels with
+  /// confidence >= 0.7 would be returned. The default threshold is 0.5.
+  const CloudImageLabelerOptions({this.confidenceThreshold = 0.5})
+      : assert(confidenceThreshold >= 0.0),
+        assert(confidenceThreshold <= 1.0);
+
+  /// The minimum confidence threshold of labels to be detected.
+  ///
+  /// Required to be in range [0.0, 1.0].
+  final double confidenceThreshold;
+}
+
+/// Represents an entity label detected by [ImageLabeler] and [CloudImageLabeler].
 class ImageLabel {
   ImageLabel._(dynamic data)
       : confidence = data['confidence']?.toDouble(),

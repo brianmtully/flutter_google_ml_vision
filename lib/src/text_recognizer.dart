@@ -36,14 +36,14 @@ class TextRecognizer {
 
     _hasBeenOpened = true;
 
-    final Map<String, dynamic>? reply =
-        await (GoogleVision.channel.invokeMapMethod<String, dynamic>(
+
+    final reply = await GoogleVision.channel.invokeMapMethod<String, dynamic>(
       'TextRecognizer#processImage',
       <String, dynamic>{
         'handle': _handle,
         'options': <String, dynamic>{},
       }..addAll(visionImage._serialize()),
-    ));
+    );
 
     return VisionText._(reply!);
   }
@@ -79,21 +79,22 @@ class VisionText {
 abstract class TextContainer {
   TextContainer._(Map<dynamic, dynamic> data)
       : boundingBox = data['left'] != null
-            ? Rect.fromLTWH(
-                data['left'],
-                data['top'],
-                data['width'],
-                data['height'],
-              )
-            : null,
+      ? Rect.fromLTWH(
+    data['left'],
+    data['top'],
+    data['width'],
+    data['height'],
+  )
+      : null,
+        confidence = data['confidence']?.toDouble(),
         cornerPoints = List<Offset>.unmodifiable(
             data['points'].map<Offset>((dynamic point) => Offset(
-                  point[0],
-                  point[1],
-                ))),
+              point[0],
+              point[1],
+            ))),
         recognizedLanguages = List<RecognizedLanguage>.unmodifiable(
             data['recognizedLanguages'].map<RecognizedLanguage>(
-                (dynamic language) => RecognizedLanguage._(language))),
+                    (dynamic language) => RecognizedLanguage._(language))),
         text = data['text'];
 
   /// Axis-aligned bounding rectangle of the detected text.
@@ -102,6 +103,11 @@ abstract class TextContainer {
   ///
   /// Could be null even if text is found.
   final Rect? boundingBox;
+
+  /// The confidence of the recognized text block.
+  ///
+  /// The value is null for onDevice text recognizer.
+  final double? confidence;
 
   /// The four corner points in clockwise direction starting with top-left.
   ///
@@ -113,8 +119,9 @@ abstract class TextContainer {
 
   /// All detected languages from recognized text.
   ///
-  /// On-device text recognizers only detect Latin-based languages.
-  /// If no languages are recognized, the list is empty.
+  /// On-device text recognizers only detect Latin-based languages, while cloud
+  /// text recognizers can detect multiple languages. If no languages are
+  /// recognized, the list is empty.
   final List<RecognizedLanguage> recognizedLanguages;
 
   /// The recognized text as a string.
@@ -128,7 +135,7 @@ abstract class TextContainer {
 class TextBlock extends TextContainer {
   TextBlock._(Map<dynamic, dynamic> block)
       : lines = List<TextLine>.unmodifiable(
-            block['lines'].map<TextLine>((dynamic line) => TextLine._(line))),
+      block['lines'].map<TextLine>((dynamic line) => TextLine._(line))),
         super._(block);
 
   /// The contents of the text block, broken down into individual lines.
@@ -139,7 +146,7 @@ class TextBlock extends TextContainer {
 class TextLine extends TextContainer {
   TextLine._(Map<dynamic, dynamic> line)
       : elements = List<TextElement>.unmodifiable(line['elements']
-            .map<TextElement>((dynamic element) => TextElement._(element))),
+      .map<TextElement>((dynamic element) => TextElement._(element))),
         super._(line);
 
   /// The contents of this line, broken down into individual elements.

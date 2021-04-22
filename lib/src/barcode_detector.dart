@@ -2,8 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-
-
 part of google_ml_vision;
 
 /// Enumeration of supported barcode content value types for [Barcode.valueType].
@@ -164,10 +162,10 @@ class BarcodeFormat {
   static const BarcodeFormat aztec = BarcodeFormat._(0x1000);
 
   /// Raw BarcodeFormat value.
-  final int? value;
+  final int value;
 
   BarcodeFormat operator |(BarcodeFormat other) =>
-      BarcodeFormat._(value! | other.value!);
+      BarcodeFormat._(value | other.value);
 }
 
 /// Detector for performing barcode scanning on an input image.
@@ -196,10 +194,9 @@ class BarcodeDetector {
   /// Detects barcodes in the input image.
   Future<List<Barcode>> detectInImage(GoogleVisionImage visionImage) async {
     assert(!_isClosed);
-
     _hasBeenOpened = true;
-    final List? reply =
-        await (GoogleVision.channel.invokeListMethod<dynamic>(
+
+    final reply = await GoogleVision.channel.invokeListMethod<dynamic>(
       'BarcodeDetector#detectInImage',
       <String, dynamic>{
         'handle': _handle,
@@ -207,10 +204,10 @@ class BarcodeDetector {
           'barcodeFormats': options.barcodeFormats.value,
         },
       }..addAll(visionImage._serialize()),
-    ));
+    );
 
     final List<Barcode> barcodes =
-        reply!.map((barcode) => Barcode._(barcode)).toList();
+    reply!.map((barcode) => Barcode._(barcode)).toList();
 
     return barcodes;
   }
@@ -249,21 +246,21 @@ class BarcodeDetectorOptions {
 class Barcode {
   Barcode._(Map<dynamic, dynamic> _data)
       : boundingBox = _data['left'] != null
-            ? Rect.fromLTWH(
-                _data['left'],
-                _data['top'],
-                _data['width'],
-                _data['height'],
-              )
-            : null,
+      ? Rect.fromLTWH(
+    _data['left'],
+    _data['top'],
+    _data['width'],
+    _data['height'],
+  )
+      : null,
         rawValue = _data['rawValue'],
         displayValue = _data['displayValue'],
         format = BarcodeFormat._(_data['format']),
         _cornerPoints = _data['points']
             ?.map<Offset>((dynamic item) => Offset(
-                  item[0],
-                  item[1],
-                ))
+          item[0],
+          item[1],
+        ))
             ?.toList(),
         valueType = BarcodeValueType.values[_data['valueType']],
         email = _data['email'] == null ? null : BarcodeEmail._(_data['email']),
@@ -284,7 +281,7 @@ class Barcode {
             ? null
             : BarcodeDriverLicense._(_data['driverLicense']);
 
-  final List<Offset>? _cornerPoints;
+  final List<Offset> _cornerPoints;
 
   /// The bounding rectangle of the detected barcode.
   ///
@@ -317,7 +314,7 @@ class Barcode {
   /// The four corner points in clockwise direction starting with top-left.
   ///
   /// Due to the possible perspective distortions, this is not necessarily a rectangle.
-  List<Offset> get cornerPoints => List<Offset>.from(_cornerPoints!);
+  List<Offset> get cornerPoints => List<Offset>.from(_cornerPoints);
 
   /// The format type of the barcode value.
   ///
@@ -429,7 +426,7 @@ class BarcodeWiFi {
       : ssid = data['ssid'],
         password = data['password'],
         encryptionType =
-            BarcodeWiFiEncryptionType.values[data['encryptionType']];
+        BarcodeWiFiEncryptionType.values[data['encryptionType']];
 
   /// A Wi-Fi access point SSID.
   final String? ssid;
@@ -460,25 +457,25 @@ class BarcodeGeoPoint {
 class BarcodeContactInfo {
   BarcodeContactInfo._(Map<dynamic, dynamic> data)
       : addresses = data['addresses'] == null
-            ? null
-            : List<BarcodeAddress>.unmodifiable(data['addresses']
-                .map<BarcodeAddress>((dynamic item) => BarcodeAddress._(item))),
+      ? null
+      : List<BarcodeAddress>.unmodifiable(data['addresses']
+      .map<BarcodeAddress>((dynamic item) => BarcodeAddress._(item))),
         emails = data['emails'] == null
             ? null
             : List<BarcodeEmail>.unmodifiable(data['emails']
-                .map<BarcodeEmail>((dynamic item) => BarcodeEmail._(item))),
+            .map<BarcodeEmail>((dynamic item) => BarcodeEmail._(item))),
         name = data['name'] == null ? null : BarcodePersonName._(data['name']),
         phones = data['phones'] == null
             ? null
             : List<BarcodePhone>.unmodifiable(data['phones']
-                .map<BarcodePhone>((dynamic item) => BarcodePhone._(item))),
+            .map<BarcodePhone>((dynamic item) => BarcodePhone._(item))),
         urls = data['urls'] == null
             ? null
             : List<String>.unmodifiable(
-                data['urls'].map<String>((dynamic item) {
-                final String s = item;
-                return s;
-              })),
+            data['urls'].map<String>((dynamic item) {
+              final String s = item;
+              return s;
+            })),
         jobTitle = data['jobTitle'],
         organization = data['organization'];
 
@@ -514,10 +511,10 @@ class BarcodeContactInfo {
 class BarcodeAddress {
   BarcodeAddress._(Map<dynamic, dynamic> data)
       : addressLines = List<String>.unmodifiable(
-            data['addressLines'].map<String>((dynamic item) {
-          final String s = item;
-          return s;
-        })),
+      data['addressLines'].map<String>((dynamic item) {
+        final String s = item;
+        return s;
+      })),
         type = BarcodeAddressType.values[data['type']];
 
   /// Formatted address, multiple lines when appropriate.

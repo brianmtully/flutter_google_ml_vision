@@ -2,8 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-
-
 part of google_ml_vision;
 
 /// Option for controlling additional trade-offs in performing face detection.
@@ -47,13 +45,13 @@ enum FaceContourType {
 /// Detector for detecting faces in an input image.
 ///
 /// A face detector is created via
-/// `faceDetector([FaceDetectorOptions options])` in [GoogleVision]:
+/// `faceDetector([FaceDetectorOptions options])` in [FirebaseVision]:
 ///
 /// ```dart
-/// final GoogleVisionImage image =
-///     GoogleVisionImage.fromFilePath('path/to/file');
+/// final FirebaseVisionImage image =
+///     FirebaseVisionImage.fromFilePath('path/to/file');
 ///
-/// final FaceDetector faceDetector = GoogleVision.instance.faceDetector();
+/// final FaceDetector faceDetector = FirebaseVision.instance.faceDetector();
 ///
 /// final List<Faces> faces = await faceDetector.processImage(image);
 /// ```
@@ -69,10 +67,9 @@ class FaceDetector {
   /// Detects faces in the input image.
   Future<List<Face>> processImage(GoogleVisionImage visionImage) async {
     assert(!_isClosed);
-
     _hasBeenOpened = true;
-    final List<dynamic> reply =
-        await (GoogleVision.channel.invokeListMethod<dynamic>(
+
+    final reply = await GoogleVision.channel.invokeListMethod<dynamic>(
       'FaceDetector#processImage',
       <String, dynamic>{
         'handle': _handle,
@@ -85,10 +82,10 @@ class FaceDetector {
           'mode': _enumToString(options.mode),
         },
       }..addAll(visionImage._serialize()),
-    ) as FutureOr<List<dynamic>>);
+    );
 
     final List<Face> faces = <Face>[];
-    for (final dynamic data in reply) {
+    for (final dynamic data in reply!) {
       faces.add(Face._(data));
     }
 
@@ -158,11 +155,11 @@ class FaceDetectorOptions {
 class Face {
   Face._(dynamic data)
       : boundingBox = Rect.fromLTWH(
-          data['left'],
-          data['top'],
-          data['width'],
-          data['height'],
-        ),
+    data['left'],
+    data['top'],
+    data['width'],
+    data['height'],
+  ),
         headEulerAngleY = data['headEulerAngleY'],
         headEulerAngleZ = data['headEulerAngleZ'],
         leftEyeOpenProbability = data['leftEyeOpenProbability'],
@@ -172,29 +169,29 @@ class Face {
         _landmarks = Map<FaceLandmarkType, FaceLandmark?>.fromIterables(
             FaceLandmarkType.values,
             FaceLandmarkType.values.map((FaceLandmarkType type) {
-          final List<dynamic>? pos = data['landmarks'][_enumToString(type)];
-          return (pos == null)
-              ? null
-              : FaceLandmark._(
-                  type,
-                  Offset(pos[0], pos[1]),
-                );
-        })),
+              final List<dynamic>? pos = data['landmarks'][_enumToString(type)];
+              return (pos == null)
+                  ? null
+                  : FaceLandmark._(
+                type,
+                Offset(pos[0], pos[1]),
+              );
+            })),
         _contours = Map<FaceContourType, FaceContour?>.fromIterables(
             FaceContourType.values,
             FaceContourType.values.map((FaceContourType type) {
-          /// added empty map to pass the tests
-          final List<dynamic>? arr =
+              /// added empty map to pass the tests
+              final List<dynamic>? arr =
               (data['contours'] ?? <String, dynamic>{})[_enumToString(type)];
-          return (arr == null)
-              ? null
-              : FaceContour._(
-                  type,
-                  arr
-                      .map<Offset>((dynamic pos) => Offset(pos[0], pos[1]))
-                      .toList(),
-                );
-        }));
+              return (arr == null)
+                  ? null
+                  : FaceContour._(
+                type,
+                arr
+                    .map<Offset>((dynamic pos) => Offset(pos[0], pos[1]))
+                    .toList(),
+              );
+            }));
 
   final Map<FaceLandmarkType, FaceLandmark?> _landmarks;
   final Map<FaceContourType, FaceContour?> _contours;
