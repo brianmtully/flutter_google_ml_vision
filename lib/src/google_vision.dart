@@ -2,6 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+// @dart=2.9
+
 part of google_ml_vision;
 
 enum _ImageType { file, bytes }
@@ -17,7 +19,7 @@ class RecognizedLanguage {
 
   /// The BCP-47 language code, such as, en-US or sr-Latn. For more information,
   /// see http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.
-  final String? languageCode;
+  final String languageCode;
 }
 
 /// The Google machine learning vision API.
@@ -32,7 +34,8 @@ class GoogleVision {
   GoogleVision._();
 
   @visibleForTesting
-  static const MethodChannel channel = MethodChannel('plugins.flutter.brianmtully.com/google_ml_vision');
+  static const MethodChannel channel =
+      MethodChannel('plugins.flutter.brianmtully.com/google_ml_vision');
 
   @visibleForTesting
   static int nextHandle = 0;
@@ -47,7 +50,7 @@ class GoogleVision {
   static final GoogleVision instance = GoogleVision._();
 
   /// Creates an instance of [BarcodeDetector].
-  BarcodeDetector barcodeDetector([BarcodeDetectorOptions? options]) {
+  BarcodeDetector barcodeDetector([BarcodeDetectorOptions options]) {
     return BarcodeDetector._(
       options ?? const BarcodeDetectorOptions(),
       nextHandle++,
@@ -55,7 +58,7 @@ class GoogleVision {
   }
 
   /// Creates an instance of [FaceDetector].
-  FaceDetector faceDetector([FaceDetectorOptions? options]) {
+  FaceDetector faceDetector([FaceDetectorOptions options]) {
     return FaceDetector._(
       options ?? const FaceDetectorOptions(),
       nextHandle++,
@@ -63,7 +66,7 @@ class GoogleVision {
   }
 
   /// Creates an on device instance of [ImageLabeler].
-  ImageLabeler imageLabeler([ImageLabelerOptions? options]) {
+  ImageLabeler imageLabeler([ImageLabelerOptions options]) {
     return ImageLabeler._(
       options: options ?? const ImageLabelerOptions(),
       handle: nextHandle++,
@@ -83,10 +86,10 @@ class GoogleVision {
 /// Create an instance by calling one of the factory constructors.
 class GoogleVisionImage {
   GoogleVisionImage._({
-    required _ImageType type,
-    GoogleVisionImageMetadata? metadata,
-    File? imageFile,
-    Uint8List? bytes,
+    @required _ImageType type,
+    GoogleVisionImageMetadata metadata,
+    File imageFile,
+    Uint8List bytes,
   })  : _imageFile = imageFile,
         _metadata = metadata,
         _bytes = bytes,
@@ -94,6 +97,7 @@ class GoogleVisionImage {
 
   /// Construct a [GoogleVisionImage] from a file.
   factory GoogleVisionImage.fromFile(File imageFile) {
+    assert(imageFile != null);
     return GoogleVisionImage._(
       type: _ImageType.file,
       imageFile: imageFile,
@@ -102,6 +106,7 @@ class GoogleVisionImage {
 
   /// Construct a [GoogleVisionImage] from a file path.
   factory GoogleVisionImage.fromFilePath(String imagePath) {
+    assert(imagePath != null);
     return GoogleVisionImage._(
       type: _ImageType.file,
       imageFile: File(imagePath),
@@ -120,6 +125,8 @@ class GoogleVisionImage {
     Uint8List bytes,
     GoogleVisionImageMetadata metadata,
   ) {
+    assert(bytes != null);
+    assert(metadata != null);
     return GoogleVisionImage._(
       type: _ImageType.bytes,
       bytes: bytes,
@@ -127,16 +134,16 @@ class GoogleVisionImage {
     );
   }
 
-  final Uint8List? _bytes;
-  final File? _imageFile;
-  final GoogleVisionImageMetadata? _metadata;
+  final Uint8List _bytes;
+  final File _imageFile;
+  final GoogleVisionImageMetadata _metadata;
   final _ImageType _type;
 
   Map<String, dynamic> _serialize() => <String, dynamic>{
         'type': _enumToString(_type),
         'bytes': _bytes,
         'path': _imageFile?.path,
-        'metadata': _type == _ImageType.bytes ? _metadata!._serialize() : null,
+        'metadata': _type == _ImageType.bytes ? _metadata._serialize() : null,
       };
 }
 
@@ -146,20 +153,25 @@ class GoogleVisionImage {
 /// if `null`.
 class GoogleVisionImagePlaneMetadata {
   GoogleVisionImagePlaneMetadata({
-    required this.bytesPerRow,
-    this.height,
-    this.width,
-  })  : assert(defaultTargetPlatform != TargetPlatform.iOS || height != null),
-        assert(defaultTargetPlatform != TargetPlatform.iOS || width != null);
+    @required this.bytesPerRow,
+    @required this.height,
+    @required this.width,
+  })  : assert(
+          defaultTargetPlatform != TargetPlatform.iOS || bytesPerRow != null,
+        ),
+        assert(defaultTargetPlatform != TargetPlatform.iOS || height != null),
+        assert(
+          defaultTargetPlatform != TargetPlatform.iOS || width != null,
+        );
 
   /// The row stride for this color plane, in bytes.
   final int bytesPerRow;
 
   /// Height of the pixel buffer on iOS.
-  final int? height;
+  final int height;
 
   /// Width of the pixel buffer on iOS.
-  final int? width;
+  final int width;
 
   Map<String, dynamic> _serialize() => <String, dynamic>{
         'bytesPerRow': bytesPerRow,
@@ -177,15 +189,19 @@ class GoogleVisionImagePlaneMetadata {
 /// `null`.
 class GoogleVisionImageMetadata {
   GoogleVisionImageMetadata({
-    required this.size,
-    this.rawFormat,
-    this.planeData,
+    @required this.size,
+    @required this.rawFormat,
+    @required this.planeData,
     this.rotation = ImageRotation.rotation0,
-  })  : assert(
-  defaultTargetPlatform != TargetPlatform.iOS || rawFormat != null,
-  ),
+  })  : assert(size != null),
         assert(
-        defaultTargetPlatform != TargetPlatform.iOS || planeData != null,
+          defaultTargetPlatform != TargetPlatform.iOS || rawFormat != null,
+        ),
+        assert(
+          defaultTargetPlatform != TargetPlatform.iOS || planeData != null,
+        ),
+        assert(
+          defaultTargetPlatform != TargetPlatform.iOS || planeData.isNotEmpty,
         );
 
   /// Size of the image in pixels.
@@ -205,12 +221,12 @@ class GoogleVisionImageMetadata {
   /// See https://developer.apple.com/documentation/corevideo/1563591-pixel_format_identifiers?language=objc
   ///
   /// Not used on Android.
-  final Object? rawFormat;
+  final dynamic rawFormat;
 
   /// The plane attributes to create the image buffer on iOS.
   ///
   /// Not used on Android.
-  final List<GoogleVisionImagePlaneMetadata>? planeData;
+  final List<GoogleVisionImagePlaneMetadata> planeData;
 
   int _imageRotationToInt(ImageRotation rotation) {
     switch (rotation) {
@@ -227,15 +243,14 @@ class GoogleVisionImageMetadata {
   }
 
   Map<String, dynamic> _serialize() => <String, dynamic>{
-    'width': size.width,
-    'height': size.height,
-    'rotation': _imageRotationToInt(rotation),
-    'rawFormat': rawFormat,
-    'planeData': planeData
-        ?.map(
-            (GoogleVisionImagePlaneMetadata plane) => plane._serialize())
-        .toList(),
-  };
+        'width': size.width,
+        'height': size.height,
+        'rotation': _imageRotationToInt(rotation),
+        'rawFormat': rawFormat,
+        'planeData': planeData
+            .map((GoogleVisionImagePlaneMetadata plane) => plane._serialize())
+            .toList(),
+      };
 }
 
 String _enumToString(dynamic enumValue) {

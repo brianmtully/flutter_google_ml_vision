@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-
+// @dart=2.9
 
 part of google_ml_vision;
 
@@ -22,7 +22,7 @@ part of google_ml_vision;
 /// ```
 class TextRecognizer {
   TextRecognizer._({
-    required int handle,
+    @required int handle,
   }) : _handle = handle;
 
   final int _handle;
@@ -33,11 +33,12 @@ class TextRecognizer {
   /// Detects [VisionText] from a [GoogleVisionImage].
   Future<VisionText> processImage(GoogleVisionImage visionImage) async {
     assert(!_isClosed);
+    assert(visionImage != null);
 
     _hasBeenOpened = true;
 
-
-    final reply = await GoogleVision.channel.invokeMapMethod<String, dynamic>(
+    final Map<String, dynamic> reply =
+        await GoogleVision.channel.invokeMapMethod<String, dynamic>(
       'TextRecognizer#processImage',
       <String, dynamic>{
         'handle': _handle,
@@ -45,7 +46,7 @@ class TextRecognizer {
       }..addAll(visionImage._serialize()),
     );
 
-    return VisionText._(reply!);
+    return VisionText._(reply);
   }
 
   /// Releases resources used by this recognizer.
@@ -69,7 +70,7 @@ class VisionText {
             .map<TextBlock>((dynamic block) => TextBlock._(block)));
 
   /// String representation of the recognized text.
-  final String? text;
+  final String text;
 
   /// All recognized text broken down into individual blocks/paragraphs.
   final List<TextBlock> blocks;
@@ -79,22 +80,21 @@ class VisionText {
 abstract class TextContainer {
   TextContainer._(Map<dynamic, dynamic> data)
       : boundingBox = data['left'] != null
-      ? Rect.fromLTWH(
-    data['left'],
-    data['top'],
-    data['width'],
-    data['height'],
-  )
-      : null,
-        confidence = data['confidence']?.toDouble(),
+            ? Rect.fromLTWH(
+                data['left'],
+                data['top'],
+                data['width'],
+                data['height'],
+              )
+            : null,
         cornerPoints = List<Offset>.unmodifiable(
             data['points'].map<Offset>((dynamic point) => Offset(
-              point[0],
-              point[1],
-            ))),
+                  point[0],
+                  point[1],
+                ))),
         recognizedLanguages = List<RecognizedLanguage>.unmodifiable(
             data['recognizedLanguages'].map<RecognizedLanguage>(
-                    (dynamic language) => RecognizedLanguage._(language))),
+                (dynamic language) => RecognizedLanguage._(language))),
         text = data['text'];
 
   /// Axis-aligned bounding rectangle of the detected text.
@@ -102,12 +102,7 @@ abstract class TextContainer {
   /// The point (0, 0) is defined as the upper-left corner of the image.
   ///
   /// Could be null even if text is found.
-  final Rect? boundingBox;
-
-  /// The confidence of the recognized text block.
-  ///
-  /// The value is null for onDevice text recognizer.
-  final double? confidence;
+  final Rect boundingBox;
 
   /// The four corner points in clockwise direction starting with top-left.
   ///
@@ -119,23 +114,22 @@ abstract class TextContainer {
 
   /// All detected languages from recognized text.
   ///
-  /// On-device text recognizers only detect Latin-based languages, while cloud
-  /// text recognizers can detect multiple languages. If no languages are
-  /// recognized, the list is empty.
+  /// On-device text recognizers only detect Latin-based languages.
+  /// If no languages are recognized, the list is empty.
   final List<RecognizedLanguage> recognizedLanguages;
 
   /// The recognized text as a string.
   ///
   /// Returned in reading order for the language. For Latin, this is top to
   /// bottom within a Block, and left-to-right within a Line.
-  final String? text;
+  final String text;
 }
 
 /// A block of text (think of it as a paragraph) as deemed by the OCR engine.
 class TextBlock extends TextContainer {
   TextBlock._(Map<dynamic, dynamic> block)
       : lines = List<TextLine>.unmodifiable(
-      block['lines'].map<TextLine>((dynamic line) => TextLine._(line))),
+            block['lines'].map<TextLine>((dynamic line) => TextLine._(line))),
         super._(block);
 
   /// The contents of the text block, broken down into individual lines.
@@ -146,7 +140,7 @@ class TextBlock extends TextContainer {
 class TextLine extends TextContainer {
   TextLine._(Map<dynamic, dynamic> line)
       : elements = List<TextElement>.unmodifiable(line['elements']
-      .map<TextElement>((dynamic element) => TextElement._(element))),
+            .map<TextElement>((dynamic element) => TextElement._(element))),
         super._(line);
 
   /// The contents of this line, broken down into individual elements.
