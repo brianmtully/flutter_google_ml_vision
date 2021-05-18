@@ -8,3 +8,7 @@
 * Null Safety
 
 ## 0.0.4
+
+* Face Detection All Points functionality
+* dependency updates
+* dart format code
