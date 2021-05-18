@@ -2,8 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-
-
 part of google_ml_vision;
 
 /// Used for finding [ImageLabel]s in a supplied image.

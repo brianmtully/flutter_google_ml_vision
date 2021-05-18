@@ -2,8 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-
-
 part of google_ml_vision;
 
 /// Detector for performing optical character recognition(OCR) on an input image.
@@ -35,7 +33,6 @@ class TextRecognizer {
     assert(!_isClosed);
 
     _hasBeenOpened = true;
-
 
     final reply = await GoogleVision.channel.invokeMapMethod<String, dynamic>(
       'TextRecognizer#processImage',
@@ -79,22 +76,22 @@ class VisionText {
 abstract class TextContainer {
   TextContainer._(Map<dynamic, dynamic> data)
       : boundingBox = data['left'] != null
-      ? Rect.fromLTWH(
-    data['left'],
-    data['top'],
-    data['width'],
-    data['height'],
-  )
-      : null,
+            ? Rect.fromLTWH(
+                data['left'],
+                data['top'],
+                data['width'],
+                data['height'],
+              )
+            : null,
         confidence = data['confidence']?.toDouble(),
         cornerPoints = List<Offset>.unmodifiable(
             data['points'].map<Offset>((dynamic point) => Offset(
-              point[0],
-              point[1],
-            ))),
+                  point[0],
+                  point[1],
+                ))),
         recognizedLanguages = List<RecognizedLanguage>.unmodifiable(
             data['recognizedLanguages'].map<RecognizedLanguage>(
-                    (dynamic language) => RecognizedLanguage._(language))),
+                (dynamic language) => RecognizedLanguage._(language))),
         text = data['text'];
 
   /// Axis-aligned bounding rectangle of the detected text.
@@ -135,7 +132,7 @@ abstract class TextContainer {
 class TextBlock extends TextContainer {
   TextBlock._(Map<dynamic, dynamic> block)
       : lines = List<TextLine>.unmodifiable(
-      block['lines'].map<TextLine>((dynamic line) => TextLine._(line))),
+            block['lines'].map<TextLine>((dynamic line) => TextLine._(line))),
         super._(block);
 
   /// The contents of the text block, broken down into individual lines.
@@ -146,7 +143,7 @@ class TextBlock extends TextContainer {
 class TextLine extends TextContainer {
   TextLine._(Map<dynamic, dynamic> line)
       : elements = List<TextElement>.unmodifiable(line['elements']
-      .map<TextElement>((dynamic element) => TextElement._(element))),
+            .map<TextElement>((dynamic element) => TextElement._(element))),
         super._(line);
 
   /// The contents of this line, broken down into individual elements.

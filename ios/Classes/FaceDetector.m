@@ -30,7 +30,6 @@
             result(@[]);
             return;
           }
-
           NSMutableArray *faceData = [NSMutableArray array];
           for (MLKFace *face in faces) {
             id smileProb = face.hasSmilingProbability ? @(face.smilingProbability) : [NSNull null];
@@ -75,7 +74,7 @@
                                                          landmark:MLKFaceLandmarkTypeMouthRight],
               },
               @"contours" : @{
-                @"allPoints" : [FaceDetector getContourPoints:face contour:MLKFaceContourTypeFace],
+                @"allPoints" : [FaceDetector getAllContourPoints:face],
                 @"face" : [FaceDetector getContourPoints:face contour:MLKFaceContourTypeFace],
                 @"leftEye" : [FaceDetector getContourPoints:face contour:MLKFaceContourTypeLeftEye],
                 @"leftEyebrowBottom" :
@@ -134,6 +133,20 @@
   }
 
   return [NSNull null];
+}
+
++ (id)getAllContourPoints:(MLKFace *)face {
+  NSArray<MLKFaceContour *> *contours = [face contours];
+    NSMutableArray *result = [[NSMutableArray alloc] init];
+    for (int i = 0; i < [contours count]; i++) {
+        NSArray<MLKVisionPoint *> *contourPoints = contours[i].points;
+        for (int j = 0; j < [contourPoints count]; j++) {
+          MLKVisionPoint *point = [contourPoints objectAtIndex:j];
+          [result addObject:@[ @(point.x), @(point.y) ] ];
+        }
+        
+    }
+   return [result copy];
 }
 
 + (MLKFaceDetectorOptions *)parseOptions:(NSDictionary *)optionsData {

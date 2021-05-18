@@ -32,7 +32,8 @@ class GoogleVision {
   GoogleVision._();
 
   @visibleForTesting
-  static const MethodChannel channel = MethodChannel('plugins.flutter.brianmtully.com/google_ml_vision');
+  static const MethodChannel channel =
+      MethodChannel('plugins.flutter.brianmtully.com/google_ml_vision');
 
   @visibleForTesting
   static int nextHandle = 0;
@@ -182,10 +183,10 @@ class GoogleVisionImageMetadata {
     this.planeData,
     this.rotation = ImageRotation.rotation0,
   })  : assert(
-  defaultTargetPlatform != TargetPlatform.iOS || rawFormat != null,
-  ),
+          defaultTargetPlatform != TargetPlatform.iOS || rawFormat != null,
+        ),
         assert(
-        defaultTargetPlatform != TargetPlatform.iOS || planeData != null,
+          defaultTargetPlatform != TargetPlatform.iOS || planeData != null,
         );
 
   /// Size of the image in pixels.
@@ -227,15 +228,14 @@ class GoogleVisionImageMetadata {
   }
 
   Map<String, dynamic> _serialize() => <String, dynamic>{
-    'width': size.width,
-    'height': size.height,
-    'rotation': _imageRotationToInt(rotation),
-    'rawFormat': rawFormat,
-    'planeData': planeData
-        ?.map(
-            (GoogleVisionImagePlaneMetadata plane) => plane._serialize())
-        .toList(),
-  };
+        'width': size.width,
+        'height': size.height,
+        'rotation': _imageRotationToInt(rotation),
+        'rawFormat': rawFormat,
+        'planeData': planeData
+            ?.map((GoogleVisionImagePlaneMetadata plane) => plane._serialize())
+            .toList(),
+      };
 }
 
 String _enumToString(dynamic enumValue) {

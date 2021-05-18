@@ -106,7 +106,7 @@ class GMLKFaceDetector implements Detector {
   private Map<String, List<double[]>> getContourData(Face face) {
     Map<String, List<double[]>> contours = new HashMap<>();
 
-    // contours.put("allPoints", contourPosition(face, FaceContour.ALL_POINTS));
+    contours.put("allPoints", allContourPoints(face));
     contours.put("face", contourPosition(face, FaceContour.FACE));
     contours.put("leftEye", contourPosition(face, FaceContour.LEFT_EYE));
     contours.put(
@@ -155,6 +155,19 @@ class GMLKFaceDetector implements Detector {
     }
 
     return null;
+  }
+
+  private List<double[]> allContourPoints(Face face) {
+    List<FaceContour> contours = face.getAllContours();
+    List<double[]> result = new ArrayList<double[]>();
+    for (int i = 0; i < contours.size(); i++) {
+      List<PointF> contourPoints = contours.get(i).getPoints();
+      for (int j = 0; j < contourPoints.size(); j++) {
+        result.add(new double[]{contourPoints.get(j).x, contourPoints.get(j).y});
+      }
+
+    }
+    return result;
   }
 
 

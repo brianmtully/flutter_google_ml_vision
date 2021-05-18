@@ -155,11 +155,11 @@ class FaceDetectorOptions {
 class Face {
   Face._(dynamic data)
       : boundingBox = Rect.fromLTWH(
-    data['left'],
-    data['top'],
-    data['width'],
-    data['height'],
-  ),
+          data['left'],
+          data['top'],
+          data['width'],
+          data['height'],
+        ),
         headEulerAngleY = data['headEulerAngleY'],
         headEulerAngleZ = data['headEulerAngleZ'],
         leftEyeOpenProbability = data['leftEyeOpenProbability'],
@@ -169,29 +169,29 @@ class Face {
         _landmarks = Map<FaceLandmarkType, FaceLandmark?>.fromIterables(
             FaceLandmarkType.values,
             FaceLandmarkType.values.map((FaceLandmarkType type) {
-              final List<dynamic>? pos = data['landmarks'][_enumToString(type)];
-              return (pos == null)
-                  ? null
-                  : FaceLandmark._(
-                type,
-                Offset(pos[0], pos[1]),
-              );
-            })),
+          final List<dynamic>? pos = data['landmarks'][_enumToString(type)];
+          return (pos == null)
+              ? null
+              : FaceLandmark._(
+                  type,
+                  Offset(pos[0], pos[1]),
+                );
+        })),
         _contours = Map<FaceContourType, FaceContour?>.fromIterables(
             FaceContourType.values,
             FaceContourType.values.map((FaceContourType type) {
-              /// added empty map to pass the tests
-              final List<dynamic>? arr =
+          /// added empty map to pass the tests
+          final List<dynamic>? arr =
               (data['contours'] ?? <String, dynamic>{})[_enumToString(type)];
-              return (arr == null)
-                  ? null
-                  : FaceContour._(
-                type,
-                arr
-                    .map<Offset>((dynamic pos) => Offset(pos[0], pos[1]))
-                    .toList(),
-              );
-            }));
+          return (arr == null)
+              ? null
+              : FaceContour._(
+                  type,
+                  arr
+                      .map<Offset>((dynamic pos) => Offset(pos[0], pos[1]))
+                      .toList(),
+                );
+        }));
 
   final Map<FaceLandmarkType, FaceLandmark?> _landmarks;
   final Map<FaceContourType, FaceContour?> _contours;
