@@ -1,8 +1,8 @@
-# Google ML Kit Plugin
+# Google ML Kit Vision Plugin
 
 (https://pub.dev/packages/google_ml_vision)
 
-A Flutter plugin to use the capabilities of on-device Google ML Kit
+A Flutter plugin to use the capabilities of on-device Google ML Kit Vision APIs
 
 ## Usage
 
