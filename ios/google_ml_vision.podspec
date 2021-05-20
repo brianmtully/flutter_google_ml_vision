@@ -20,8 +20,6 @@ Plugin for Google ML Kit
   s.source_files = 'Classes/**/*'
   s.public_header_files = 'Classes/**/*.h'
   s.dependency 'Flutter'
-  s.dependency 'GoogleMLKit/BarcodeScanning'
-  s.dependency 'GoogleMLKit/TextRecognition'
   s.platform = :ios, '11.0'
 
   # Flutter.framework does not contain a i386 slice. Only x86_64 simulators are supported.
