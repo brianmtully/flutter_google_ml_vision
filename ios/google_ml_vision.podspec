@@ -8,7 +8,7 @@ libraryVersion = pubspec['version'].gsub('+', '-')
 
 Pod::Spec.new do |s|
   s.name             = 'google_ml_vision'
-  s.version          = '0.0.2'
+  s.version          = '0.0.4'
   s.summary          = 'Flutter plugin for Google ML Kit'
   s.description      = <<-DESC
 Plugin for Google ML Kit

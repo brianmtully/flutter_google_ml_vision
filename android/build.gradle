@@ -1,5 +1,5 @@
 group 'com.brianmtully.plugins.googlemlvision'
-version '0.0.2'
+version '0.0.4'
 
 buildscript {
     repositories {

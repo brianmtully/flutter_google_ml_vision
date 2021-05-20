@@ -109,6 +109,7 @@ class _CameraPreviewScannerState extends State<CameraPreviewScanner> {
     switch (_currentDetector) {
       case Detector.barcode:
         if (_scanResults is! List<Barcode>) return noResultsText;
+        print(_scanResults);
         painter = BarcodeDetectorPainter(imageSize, _scanResults);
         break;
       case Detector.face:

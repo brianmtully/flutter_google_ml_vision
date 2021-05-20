@@ -45,13 +45,13 @@ enum FaceContourType {
 /// Detector for detecting faces in an input image.
 ///
 /// A face detector is created via
-/// `faceDetector([FaceDetectorOptions options])` in [FirebaseVision]:
+/// `faceDetector([FaceDetectorOptions options])` in [GoogleVision]:
 ///
 /// ```dart
-/// final FirebaseVisionImage image =
-///     FirebaseVisionImage.fromFilePath('path/to/file');
+/// final GoogleVisionImage image =
+///     GoogleVisionImage.fromFilePath('path/to/file');
 ///
-/// final FaceDetector faceDetector = FirebaseVision.instance.faceDetector();
+/// final FaceDetector faceDetector = GoogleVision.instance.faceDetector();
 ///
 /// final List<Faces> faces = await faceDetector.processImage(image);
 /// ```

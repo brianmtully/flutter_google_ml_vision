@@ -12,3 +12,11 @@
 * Face Detection All Points functionality
 * dependency updates
 * dart format code
+
+## 0.0.4+1
+
+* Update LICENSE
+
+## 0.0.4+2
+
+* iOS dependency issue
