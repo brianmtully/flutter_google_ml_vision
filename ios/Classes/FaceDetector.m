@@ -137,12 +137,14 @@
 
 + (id)getAllContourPoints:(MLKFace *)face {
   NSArray<MLKFaceContour *> *contours = [face contours];
-    NSMutableArray *result = [[NSMutableArray alloc] init];
+    NSMutableArray  *result = [[NSMutableArray alloc] init];
+    int index = 0;
     for (int i = 0; i < [contours count]; i++) {
         NSArray<MLKVisionPoint *> *contourPoints = contours[i].points;
         for (int j = 0; j < [contourPoints count]; j++) {
           MLKVisionPoint *point = [contourPoints objectAtIndex:j];
-          [result addObject:@[ @(point.x), @(point.y) ] ];
+            [result insertObject:@[ @(point.x), @(point.y) ] atIndex:index];
+            index++;
         }
         
     }

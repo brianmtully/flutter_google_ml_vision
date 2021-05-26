@@ -28,7 +28,8 @@ class _CameraPreviewScannerState extends State<CameraPreviewScanner> {
 
   final BarcodeDetector _barcodeDetector =
       GoogleVision.instance.barcodeDetector();
-  final FaceDetector _faceDetector = GoogleVision.instance.faceDetector();
+  final FaceDetector _faceDetector = GoogleVision.instance
+      .faceDetector(FaceDetectorOptions(enableContours: true));
   final ImageLabeler _imageLabeler = GoogleVision.instance.imageLabeler();
   final TextRecognizer _recognizer = GoogleVision.instance.textRecognizer();
 
