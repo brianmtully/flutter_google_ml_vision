@@ -135,7 +135,8 @@
   return [NSNull null];
 }
 
-// Order based on ML Kit doc https://developers.google.com/ml-kit/vision/face-detection/face-detection-concepts#contours
+// Order based on ML Kit constant orders https://developers.google.com/android/reference/com/google/mlkit/vision/face/FaceContour
+// Order from ML Kit documentation is not valid for lips https://developers.google.com/ml-kit/vision/face-detection/face-detection-concepts#contours
 + (id)getAllContourPoints:(MLKFace *)face {
     NSMutableArray *result = [[NSMutableArray alloc] init];
     
@@ -146,9 +147,9 @@
     [result addObjectsFromArray:[FaceDetector getContourPoints:face contour:MLKFaceContourTypeRightEyebrowBottom]];
     [result addObjectsFromArray:[FaceDetector getContourPoints:face contour:MLKFaceContourTypeLeftEye]];
     [result addObjectsFromArray:[FaceDetector getContourPoints:face contour:MLKFaceContourTypeRightEye]];
+    [result addObjectsFromArray:[FaceDetector getContourPoints:face contour:MLKFaceContourTypeUpperLipTop]];
     [result addObjectsFromArray:[FaceDetector getContourPoints:face contour:MLKFaceContourTypeUpperLipBottom]];
     [result addObjectsFromArray:[FaceDetector getContourPoints:face contour:MLKFaceContourTypeLowerLipTop]];
-    [result addObjectsFromArray:[FaceDetector getContourPoints:face contour:MLKFaceContourTypeUpperLipTop]];
     [result addObjectsFromArray:[FaceDetector getContourPoints:face contour:MLKFaceContourTypeLowerLipBottom]];
     [result addObjectsFromArray:[FaceDetector getContourPoints:face contour:MLKFaceContourTypeNoseBridge]];
     [result addObjectsFromArray:[FaceDetector getContourPoints:face contour:MLKFaceContourTypeNoseBottom]];
