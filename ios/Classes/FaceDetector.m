@@ -135,20 +135,28 @@
   return [NSNull null];
 }
 
+// Order based on ML Kit constant orders https://developers.google.com/android/reference/com/google/mlkit/vision/face/FaceContour
+// Order from ML Kit documentation is not valid for lips https://developers.google.com/ml-kit/vision/face-detection/face-detection-concepts#contours
 + (id)getAllContourPoints:(MLKFace *)face {
-  NSArray<MLKFaceContour *> *contours = [face contours];
-    NSMutableArray  *result = [[NSMutableArray alloc] init];
-    int index = 0;
-    for (int i = 0; i < [contours count]; i++) {
-        NSArray<MLKVisionPoint *> *contourPoints = contours[i].points;
-        for (int j = 0; j < [contourPoints count]; j++) {
-          MLKVisionPoint *point = [contourPoints objectAtIndex:j];
-            [result insertObject:@[ @(point.x), @(point.y) ] atIndex:index];
-            index++;
-        }
-        
-    }
-   return [result copy];
+    NSMutableArray *result = [[NSMutableArray alloc] init];
+    
+    [result addObjectsFromArray:[FaceDetector getContourPoints:face contour:MLKFaceContourTypeFace]];
+    [result addObjectsFromArray:[FaceDetector getContourPoints:face contour:MLKFaceContourTypeLeftEyebrowTop]];
+    [result addObjectsFromArray:[FaceDetector getContourPoints:face contour:MLKFaceContourTypeLeftEyebrowBottom]];
+    [result addObjectsFromArray:[FaceDetector getContourPoints:face contour:MLKFaceContourTypeRightEyebrowTop]];
+    [result addObjectsFromArray:[FaceDetector getContourPoints:face contour:MLKFaceContourTypeRightEyebrowBottom]];
+    [result addObjectsFromArray:[FaceDetector getContourPoints:face contour:MLKFaceContourTypeLeftEye]];
+    [result addObjectsFromArray:[FaceDetector getContourPoints:face contour:MLKFaceContourTypeRightEye]];
+    [result addObjectsFromArray:[FaceDetector getContourPoints:face contour:MLKFaceContourTypeUpperLipTop]];
+    [result addObjectsFromArray:[FaceDetector getContourPoints:face contour:MLKFaceContourTypeUpperLipBottom]];
+    [result addObjectsFromArray:[FaceDetector getContourPoints:face contour:MLKFaceContourTypeLowerLipTop]];
+    [result addObjectsFromArray:[FaceDetector getContourPoints:face contour:MLKFaceContourTypeLowerLipBottom]];
+    [result addObjectsFromArray:[FaceDetector getContourPoints:face contour:MLKFaceContourTypeNoseBridge]];
+    [result addObjectsFromArray:[FaceDetector getContourPoints:face contour:MLKFaceContourTypeNoseBottom]];
+    [result addObjectsFromArray:[FaceDetector getContourPoints:face contour:MLKFaceContourTypeLeftCheek]];
+    [result addObjectsFromArray:[FaceDetector getContourPoints:face contour:MLKFaceContourTypeRightCheek]];
+
+    return [result copy];
 }
 
 + (MLKFaceDetectorOptions *)parseOptions:(NSDictionary *)optionsData {
