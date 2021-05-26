@@ -20,3 +20,8 @@
 ## 0.0.4+2
 
 * iOS dependency issue
+
+## 0.0.5
+
+* Face Detection AllPoints fix
+* Example app changes
