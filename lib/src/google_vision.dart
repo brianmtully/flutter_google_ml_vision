@@ -86,9 +86,9 @@ class GoogleVisionImage {
   GoogleVisionImage._({
     required _ImageType type,
     GoogleVisionImageMetadata? metadata,
-    File? imageFile,
+    String? filePath,
     Uint8List? bytes,
-  })  : _imageFile = imageFile,
+  })  : _filePath = filePath,
         _metadata = metadata,
         _bytes = bytes,
         _type = type;
@@ -97,7 +97,7 @@ class GoogleVisionImage {
   factory GoogleVisionImage.fromFile(File imageFile) {
     return GoogleVisionImage._(
       type: _ImageType.file,
-      imageFile: imageFile,
+      filePath: imageFile.path,
     );
   }
 
@@ -105,7 +105,7 @@ class GoogleVisionImage {
   factory GoogleVisionImage.fromFilePath(String imagePath) {
     return GoogleVisionImage._(
       type: _ImageType.file,
-      imageFile: File(imagePath),
+      filePath: imagePath,
     );
   }
 
@@ -129,14 +129,14 @@ class GoogleVisionImage {
   }
 
   final Uint8List? _bytes;
-  final File? _imageFile;
+  final String? _filePath;
   final GoogleVisionImageMetadata? _metadata;
   final _ImageType _type;
 
   Map<String, dynamic> _serialize() => <String, dynamic>{
         'type': _enumToString(_type),
         'bytes': _bytes,
-        'path': _imageFile?.path,
+        'path': _filePath,
         'metadata': _type == _ImageType.bytes ? _metadata!._serialize() : null,
       };
 }

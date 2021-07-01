@@ -132,14 +132,15 @@
     return [result copy];
   }
 
-  return [NSNull null];
+  //return [NSNull null];
+  return [NSMutableArray new];
 }
 
 // Order based on ML Kit constant orders https://developers.google.com/android/reference/com/google/mlkit/vision/face/FaceContour
 // Order from ML Kit documentation is not valid for lips https://developers.google.com/ml-kit/vision/face-detection/face-detection-concepts#contours
 + (id)getAllContourPoints:(MLKFace *)face {
     NSMutableArray *result = [[NSMutableArray alloc] init];
-    
+    NSLog(@"DETECTING ALL POINTS");
     [result addObjectsFromArray:[FaceDetector getContourPoints:face contour:MLKFaceContourTypeFace]];
     [result addObjectsFromArray:[FaceDetector getContourPoints:face contour:MLKFaceContourTypeLeftEyebrowTop]];
     [result addObjectsFromArray:[FaceDetector getContourPoints:face contour:MLKFaceContourTypeLeftEyebrowBottom]];
