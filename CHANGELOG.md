@@ -25,3 +25,7 @@
 
 * Face Detection AllPoints fix
 * Example app changes
+
+## 0.0.6
+
+* Library Version Updates For Firebase Compatibility
