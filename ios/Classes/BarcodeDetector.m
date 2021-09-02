@@ -45,6 +45,7 @@ NSDictionary *visionBarcodeToDictionary(MLKBarcode *barcode) {
   for (NSValue *point in barcode.cornerPoints) {
     [points addObject:@[ @(point.CGPointValue.x), @(point.CGPointValue.y) ]];
   }
+    
   return @{
     @"rawValue" : barcode.rawValue,
     @"displayValue" : barcode.displayValue ? barcode.displayValue : [NSNull null],
@@ -181,32 +182,32 @@ NSDictionary *calendarEventToDictionary(MLKBarcodeCalendarEvent *calendar) {
   dateFormatter.dateFormat = @"yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'";
   dateFormatter.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
   return @{
-    @"eventDescription" : calendar.eventDescription,
-    @"location" : calendar.location,
-    @"organizer" : calendar.organizer,
-    @"status" : calendar.status,
-    @"summary" : calendar.summary,
-    @"start" : [dateFormatter stringFromDate:calendar.start],
-    @"end" : [dateFormatter stringFromDate:calendar.end],
+    @"eventDescription" : calendar.eventDescription? calendar.eventDescription : [NSNull null],
+    @"location" : calendar.location? calendar.location : [NSNull null],
+    @"organizer" : calendar.organizer? calendar.organizer : [NSNull null],
+    @"status" : calendar.status? calendar.status : [NSNull null],
+    @"summary" : calendar.summary? calendar.summary : [NSNull null],
+    @"start" : calendar.start? [dateFormatter stringFromDate:calendar.start] : [NSNull null],
+    @"end" : calendar.end? [dateFormatter stringFromDate:calendar.end] : [NSNull null],
   };
 }
 
 NSDictionary *driverLicenseToDictionary(MLKBarcodeDriverLicense *license) {
   return @{
-    @"firstName" : license.firstName,
-    @"middleName" : license.middleName,
-    @"lastName" : license.lastName,
-    @"gender" : license.gender,
-    @"addressCity" : license.addressCity,
-    @"addressStreet" : license.addressStreet,
-    @"addressState" : license.addressState,
-    @"addressZip" : license.addressZip,
-    @"birthDate" : license.birthDate,
-    @"documentType" : license.documentType,
-    @"licenseNumber" : license.licenseNumber,
-    @"expiryDate" : license.expiryDate,
-    @"issuingDate" : license.issuingDate,
-    @"issuingCountry" : license.issuingCountry,
+    @"firstName" : license.firstName ? license.firstName : [NSNull null],
+    @"middleName" : license.middleName? license.middleName : [NSNull null],
+    @"lastName" : license.lastName? license.lastName : [NSNull null],
+    @"gender" : license.gender? license.gender : [NSNull null],
+    @"addressCity" : license.addressCity? license.addressCity : [NSNull null],
+    @"addressStreet" : license.addressStreet? license.addressStreet : [NSNull null],
+    @"addressState" : license.addressState? license.addressState : [NSNull null],
+    @"addressZip" : license.addressZip? license.addressZip : [NSNull null],
+    @"birthDate" : license.birthDate? license.birthDate : [NSNull null],
+    @"documentType" : license.documentType? license.documentType : [NSNull null],
+    @"licenseNumber" : license.licenseNumber? license.licenseNumber : [NSNull null],
+    @"expiryDate" : license.expiryDate? license.expiryDate : [NSNull null],
+    @"issuingDate" : license.issuingDate? license.issuingDate : [NSNull null],
+    @"issuingCountry" : license.issuingCountry? license.issuingCountry : [NSNull null],
   };
 }
 

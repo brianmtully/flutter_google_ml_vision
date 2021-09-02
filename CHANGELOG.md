@@ -29,3 +29,7 @@
 ## 0.0.6
 
 * Library Version Updates For Firebase Compatibility
+
+## 0.0.7
+
+* fix driver License detection
