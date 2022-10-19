@@ -350,7 +350,7 @@ class _MaterialBarcodeScannerState extends State<MaterialBarcodeScanner>
                     '1 result found',
                     // TODO(bmparr): Switch body2 -> bodyText1 once https://github.com/flutter/flutter/pull/48547 makes it to stable.
                     // ignore: deprecated_member_use
-                    style: Theme.of(context).textTheme.body2,
+                    style: Theme.of(context).textTheme.bodyText2,
                   ),
                 ),
               ),
@@ -380,14 +380,14 @@ class _MaterialBarcodeScannerState extends State<MaterialBarcodeScanner>
                                     'SPAN Reader',
                                     // TODO(bmparr): Switch body2 -> bodyText1 once https://github.com/flutter/flutter/pull/48547 makes it to stable.
                                     // ignore: deprecated_member_use
-                                    style: Theme.of(context).textTheme.body2,
+                                    style: Theme.of(context).textTheme.bodyText2,
                                   ),
                                 ),
                                 Text(
                                   'Vol. 2',
                                   // TODO(bmparr): Switch body2 -> bodyText1 once https://github.com/flutter/flutter/pull/48547 makes it to stable.
                                   // ignore: deprecated_member_use
-                                  style: Theme.of(context).textTheme.body2,
+                                  style: Theme.of(context).textTheme.bodyText2,
                                 ),
                                 Expanded(
                                   child: Column(
