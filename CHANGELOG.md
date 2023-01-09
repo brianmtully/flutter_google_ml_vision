@@ -33,3 +33,7 @@
 ## 0.0.7
 
 * fix driver License detection
+
+## 0.0.8
+
+* Updated podspec file
