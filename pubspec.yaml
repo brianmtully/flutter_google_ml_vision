@@ -27,3 +27,6 @@ flutter:
         pluginClass: GoogleMlVisionPlugin
       ios:
         pluginClass: FLTGoogleMlVisionPlugin
+
+false_secrets:
+  - 'example/ios/Runner/GoogleService-Info.plist'
