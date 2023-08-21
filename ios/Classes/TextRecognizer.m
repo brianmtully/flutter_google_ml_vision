@@ -5,6 +5,11 @@
 #import "FLTGoogleMlVisionPlugin.h"
 
 @import MLKitTextRecognition;
+@import MLKitTextRecognitionCommon.MLKTextRecognizedLanguage;
+@import MLKitTextRecognitionCommon.MLKText;
+@import MLKitTextRecognitionCommon.MLKTextBlock;
+@import MLKitTextRecognitionCommon.MLKTextLine;
+@import MLKitTextRecognitionCommon.MLKTextElement;
 
 @interface TextRecognizer ()
 @property MLKTextRecognizer *recognizer;
